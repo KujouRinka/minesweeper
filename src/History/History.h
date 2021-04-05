@@ -1,0 +1,18 @@
+//
+// Created by KujouRinka on 2021/4/5.
+//
+
+/*
+ * This package is used to process history information
+ */
+
+#ifndef MINESWEEPER_HISTORY_H
+#define MINESWEEPER_HISTORY_H
+
+namespace history {
+
+    void history();
+
+}
+
+#endif //MINESWEEPER_HISTORY_H
