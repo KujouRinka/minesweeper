@@ -4,6 +4,7 @@
 
 /*
  * This package is used to process history information
+ * Include history games and uncompleted games.
  */
 
 #ifndef MINESWEEPER_HISTORY_H
