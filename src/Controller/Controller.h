@@ -6,12 +6,15 @@
  * This package is used to process user operation
  */
 
+
 #ifndef MINESWEEPER_CONTROLLER_H
 #define MINESWEEPER_CONTROLLER_H
 
+#include "../MapGenerator/MapGenerator.h"
+
 namespace Controller {
 
-    void InitGame();
+    void InitGame(MapGenerator::Minefield minefield);
 
     void InGameProcess();
 

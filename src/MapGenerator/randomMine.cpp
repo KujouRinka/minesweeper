@@ -12,3 +12,8 @@ void MapGenerator::generateMine(Minefield emptyField) {
 void MapGenerator::pictureMap(Minefield minedField) {
     /* calculate quantity of mines around a block */
 }
+
+MapGenerator::Minefield
+MapGenerator::coveredMap(Minefield minefield) {
+    /* generate map that is shown to user */
+}
