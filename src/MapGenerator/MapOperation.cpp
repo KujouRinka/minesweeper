@@ -10,7 +10,7 @@
  * This is default method to generate size of Minefield.
  * There are three level of difficulty.
  *
- * arg: LEVEL level
+ * @param level
  * EASY: 9 * 9 with 10 mines
  * NORMAL: 16 * 16 with 40 mines
  * HARD: 16 * 30 with 99 mines
@@ -27,35 +27,40 @@ MapGenerator::MField::MField(LEVEL level) {
         this->line = 30;
         this->numberOfMines = 99;
     }
-    generateEmptyMap();
 }
 
 /**
  * This constructor is used to generate customized Minefield.
  * Both max values of row and line are uint16.
  *
- * arg: cRow
+ * @param cRow
  * Row of Minefield
  *
- * arg: cLine
+ * @param cLine
  * Line of Minefield
  *
- * arg: cMines
+ * @param cMines
  * Quantity of mines
  *
- * example:
+ * @example:
  * MField(foo, bar, 42);
  * Generate a Minefield with size of foo * bar and 42 mines.
  */
 MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
-                             uint16_t cMines) :
-        row(cRow), line(cLine), numberOfMines(cMines) {
-    generateEmptyMap();
+                             uint16_t cMines) {
+    row = cRow;
+    line = cLine;
+    numberOfMines = cMines;
 }
 
 /**
- * This method is used to initialize a empty map.
-*/
-void MapGenerator::MField::generateEmptyMap() {
-
+ * Use a initialize MField to generate map showing to user.
+ *
+ * @param initializedMap
+ * A initialized Minefield
+ */
+MapGenerator::MField::MField(MapGenerator::MField *initializedMap) {
+    row = initializedMap->row;
+    line = initializedMap->line;
+    numberOfMines = 0;
 }
