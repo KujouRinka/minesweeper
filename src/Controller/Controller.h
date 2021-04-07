@@ -14,6 +14,19 @@
 
 namespace Controller {
 
+    struct Player {
+    public:
+        Player() = default;
+
+        explicit Player(MapGenerator::Minefield field);
+
+    private:
+        MapGenerator::Minefield minefield;
+        MapGenerator::MField showPlayerField;
+
+        void generateEmptyMap();
+    };
+
     void InitGame(MapGenerator::Minefield minefield);
 
     void InGameProcess();
