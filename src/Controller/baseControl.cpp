@@ -3,7 +3,3 @@
 //
 
 #include "Controller.h"
-
-void Controller::InitGame(MapGenerator::Minefield minefield) {
-    /* ask user to generate map */
-}
