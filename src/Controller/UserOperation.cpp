@@ -12,9 +12,11 @@
  */
 Controller::Controller *Controller::InitGame() {
     int method;     // ask player to decide default or custom.
+    std::cout << "method:";     // need to add more details here
     std::cin >> method;
     MapGenerator::Minefield mField;
     Controller *controller;
+    std::cout << "mine:";
     switch (method) {
         case 0:
             int row, line, mine;
@@ -39,7 +41,7 @@ Controller::Controller *Controller::InitGame() {
  * needs to be overwritten.
  */
 void Controller::InGameProcess() {
-
+ /* should receive command here */
 }
 
 /**
@@ -48,5 +50,5 @@ void Controller::InGameProcess() {
  * needs to be overwritten.
  */
 void Controller::FinishGame(Controller *controller) {
-
+    delete controller;
 }
