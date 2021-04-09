@@ -10,6 +10,7 @@
 #define MINESWEEPER_MAPGENERATOR_H
 
 #include <cstdint>
+#include <array>
 
 namespace MapGenerator {
 
@@ -20,6 +21,8 @@ namespace MapGenerator {
     struct MField {
     public:
 
+        typedef std::array<std::array<uint8_t, 30>, 30> Map;
+
         MField() = default;
 
         explicit MField(LEVEL level);
@@ -28,12 +31,24 @@ namespace MapGenerator {
 
         MField(uint16_t cRow, uint16_t cLine, uint16_t cMines);
 
+        int GetRow() const;
+
+        int GetLine() const;
+
+        int GetMines() const;
+
+        Map *GetMap() const;
+
+        ~MField();
+
     private:
         uint16_t row;
         uint16_t line;
         uint16_t numberOfMines;
         uint16_t questioned = 0;
-        void *mineMap{};
+        Map mineMap{};
+
+        void cleanMap();
     };
 
     typedef MField *Minefield;

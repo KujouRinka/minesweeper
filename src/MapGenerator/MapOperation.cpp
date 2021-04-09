@@ -4,6 +4,7 @@
 
 // This file contains methods of struct MField
 
+#include <algorithm>
 #include "MapGenerator.h"
 
 /**
@@ -27,6 +28,8 @@ MapGenerator::MField::MField(LEVEL level) {
         this->line = 30;
         this->numberOfMines = 99;
     }
+    cleanMap();
+    generateMine(this);
 }
 
 /**
@@ -51,6 +54,8 @@ MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
     row = cRow;
     line = cLine;
     numberOfMines = cMines;
+    cleanMap();
+    generateMine(this);
 }
 
 /**
@@ -63,4 +68,33 @@ MapGenerator::MField::MField(MapGenerator::MField *initializedMap) {
     row = initializedMap->row;
     line = initializedMap->line;
     numberOfMines = 0;
+    cleanMap();
 }
+
+int MapGenerator::MField::GetRow() const {
+    return row;
+}
+
+int MapGenerator::MField::GetLine() const {
+    return line;
+}
+
+int MapGenerator::MField::GetMines() const {
+    return numberOfMines;
+}
+
+MapGenerator::MField::Map *MapGenerator::MField::GetMap() const {
+    return const_cast<Map *>(&mineMap);
+}
+
+void MapGenerator::MField::cleanMap() {
+    for (auto &i : mineMap)
+        std::fill(i.begin(), i.end(), 0);
+}
+
+MapGenerator::MField::~MField() {
+    //delete mineMap;
+    // do some clean work.
+}
+
+
