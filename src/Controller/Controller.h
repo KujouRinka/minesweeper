@@ -22,8 +22,22 @@ namespace Controller {
 
         ~Controller();
 
+
+        void Click();
+
+        void Flag();
+
+        void Question();
+
     private:
+        struct cursor {
+            uint16_t x = 0;
+            uint16_t y = 0;
+        };
+
+        // excepted to replace it by smart pointer.
         MapGenerator::Minefield minefield = nullptr;
+
         MapGenerator::Minefield showPlayerField = nullptr;
 
         void generateEmptyMap();

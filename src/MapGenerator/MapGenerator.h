@@ -51,7 +51,7 @@ namespace MapGenerator {
         void cleanMap();
     };
 
-    typedef MField *Minefield;
+    typedef MField *Minefield;  // excepted to replace it by smart pointer.
 
     void generateMine(Minefield emptyField);
 
