@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <conio.h>
+
 #include "Controller.h"
 
 /**
@@ -41,7 +43,30 @@ Controller::Controller *Controller::InitGame() {
  * needs to be overwritten.
  */
 void Controller::InGameProcess() {
- /* should receive command here */
+    /* should receive command here */
+    int command;
+    while ((command = getch()) != EOF) {    // read cmd from keyboard
+        switch (command) {
+            case '1':   // click block
+                break;
+            case '2':   // flag block
+                break;
+            case '3':   // question block
+                break;
+            case 'h':   // left move cursor
+            case 'a':
+                break;
+            case 'l':   // right move cursor
+            case 'd':
+                break;
+            case 'j':   // down move cursor
+            case 's':
+                break;
+            case 'k':   // up move cursor
+            case 'w':
+                break;
+        }
+    }
 }
 
 /**

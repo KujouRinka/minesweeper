@@ -27,6 +27,8 @@ MapGenerator::MField::MField(LEVEL level) {
         this->row = 16;
         this->line = 30;
         this->numberOfMines = 99;
+    } else {
+        exit(1);
     }
     cleanMap();
     generateMine(this);

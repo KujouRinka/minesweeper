@@ -26,6 +26,27 @@ void Controller::Controller::generateEmptyMap() {
 }
 
 /**
+ * Do click block operation.
+ */
+void Controller::Controller::Click() {
+
+}
+
+/**
+ * Do "flag" block operation.
+ */
+void Controller::Controller::Flag() {
+
+}
+
+/**
+ * Do "question" block operation.
+ */
+void Controller::Controller::Question() {
+
+}
+
+/**
  * Do clean work.
  *
  * needs to be overwritten.
