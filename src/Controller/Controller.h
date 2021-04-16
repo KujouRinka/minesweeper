@@ -43,6 +43,8 @@ namespace Controller {
 
         void CurDownMov();
 
+        void Draw();
+
     private:
         struct {
             uint16_t x = 0;

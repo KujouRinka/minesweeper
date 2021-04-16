@@ -87,6 +87,13 @@ void Controller::Controller::CurDownMov() {
 }
 
 /**
+ * Draw console.
+ */
+void Controller::Controller::Draw() {
+
+}
+
+/**
  * To check if next position of cursor move out of bounds.
  * @param x
  * @param y
