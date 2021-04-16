@@ -42,29 +42,40 @@ Controller::Controller *Controller::InitGame() {
  *
  * needs to be overwritten.
  */
-void Controller::InGameProcess() {
+void Controller::InGameProcess(Controller *controller) {
     /* should receive command here */
     int command;
-    while ((command = getch()) != EOF) {    // read cmd from keyboard
+    while ((command = getch()) != EOF && command != 'q') {    // read cmd from keyboard
         switch (command) {
             case '1':   // click block
+                controller->Click();
                 break;
             case '2':   // flag block
+                controller->Flag();
                 break;
             case '3':   // question block
+                controller->Question();
                 break;
             case 'h':   // left move cursor
             case 'a':
+                controller->CurLeftMov();
                 break;
             case 'l':   // right move cursor
             case 'd':
+                controller->CurRightMov();
                 break;
             case 'j':   // down move cursor
             case 's':
+                controller->CurDownMov();
                 break;
             case 'k':   // up move cursor
             case 'w':
+                controller->CurUpMov();
                 break;
+            case 'z':   // hint this block;
+                controller->Hint();
+                break;
+            default:;
         }
     }
 }

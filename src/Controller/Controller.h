@@ -10,6 +10,7 @@
 #ifndef MINESWEEPER_CONTROLLER_H
 #define MINESWEEPER_CONTROLLER_H
 
+#include <string>
 #include "../MapGenerator/MapGenerator.h"
 
 namespace Controller {
@@ -20,8 +21,11 @@ namespace Controller {
 
         explicit Controller(MapGenerator::Minefield field);
 
-        ~Controller();
+        MapGenerator::Minefield GetMineField();
 
+        MapGenerator::Minefield GetShowedField();
+
+        ~Controller();
 
         void Click();
 
@@ -29,11 +33,21 @@ namespace Controller {
 
         void Question();
 
+        void Hint();
+
+        void CurLeftMov();
+
+        void CurRightMov();
+
+        void CurUpMov();
+
+        void CurDownMov();
+
     private:
-        struct cursor {
+        struct {
             uint16_t x = 0;
             uint16_t y = 0;
-        };
+        } cursor;
 
         // excepted to replace it by smart pointer.
         MapGenerator::Minefield minefield = nullptr;
@@ -41,11 +55,15 @@ namespace Controller {
         MapGenerator::Minefield showPlayerField = nullptr;
 
         void generateEmptyMap();
+
+        bool isOut(uint16_t x, uint16_t y);
+
+        void printDebug(const std::string &par) const;
     };
 
     Controller *InitGame();
 
-    void InGameProcess();
+    void InGameProcess(Controller *controller);
 
     void FinishGame(Controller *controller);
 
