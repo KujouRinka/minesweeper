@@ -3,6 +3,7 @@
 //
 
 #include <random>
+#include <ctime>
 #include "MapGenerator.h"
 
 /**
@@ -13,7 +14,8 @@
  * A pointer of MField which just initialize map size.
  * */
 void MapGenerator::generateMine(Minefield emptyField) {
-    std::default_random_engine generator;
+    std::random_device rd;
+    std::default_random_engine generator(rd());
     std::uniform_int_distribution<int> forRow(0, emptyField->GetRow() - 1);
     std::uniform_int_distribution<int> forLine(0, emptyField->GetLine() - 1);
     uint16_t mines = emptyField->GetMines();

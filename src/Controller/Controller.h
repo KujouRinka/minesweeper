@@ -21,7 +21,7 @@ namespace Controller {
 
         explicit Controller(MapGenerator::Minefield field);
 
-        MapGenerator::Minefield GetMineField();
+        MapGenerator::Minefield GetMineField() const;
 
         MapGenerator::Minefield GetShowedField();
 
@@ -43,6 +43,8 @@ namespace Controller {
 
         void CurDownMov();
 
+        void Draw();
+
     private:
         struct {
             uint16_t x = 0;
@@ -56,7 +58,11 @@ namespace Controller {
 
         void generateEmptyMap();
 
-        bool isOut(uint16_t x, uint16_t y);
+        bool isOut(uint16_t x, uint16_t y) const;
+
+        bool isClickedMine() const;
+
+        void finishGame(bool result);
 
         void printDebug(const std::string &par) const;
     };

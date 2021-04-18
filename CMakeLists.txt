@@ -3,4 +3,4 @@ project(minesweeper)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(minesweeper main.cpp src/MapGenerator/randomMine.cpp src/MapGenerator/MapGenerator.h src/Controller/Controller.h src/History/History.h src/Controller/baseControl.cpp src/MapGenerator/MapOperation.cpp src/Controller/controllerOperation.cpp src/Controller/UserOperation.cpp)
+add_executable(minesweeper main.cpp src/MapGenerator/randomMine.cpp src/MapGenerator/MapGenerator.h src/Controller/Controller.h src/History/History.h src/Controller/baseControl.cpp src/MapGenerator/MapOperation.cpp src/Controller/controllerOperation.cpp src/Controller/UserOperation.cpp src/Controller/draw.c src/Controller/draw.h)
