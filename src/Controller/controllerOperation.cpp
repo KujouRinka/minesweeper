@@ -6,18 +6,20 @@
 #include "Controller.h"
 
 void Controller::Controller::printDebug(const std::string &par) const {
-    std::cout << "\ryou " + par + " (" << cursor.x << ", " << cursor.y << ")" + std::string(10, ' ');
+    std::cout << "\ryou " + par + " ("
+              << this->cursor.x << ", " << this->cursor.y
+              << ")" + std::string(10, ' ');
 }
 
 /**
- * This method helps to initialize user struct.
+ * This method helps to initialize Controller struct.
  *
  * @param field
  * A initialized Minefield
  */
-Controller::Controller::Controller(MapGenerator::Minefield field) {
-    minefield = field;
-    showPlayerField = new MapGenerator::MField(minefield);
+Controller::Controller::Controller(MapGenerator::MinefieldPtr field) {
+    this->minefield.reset(field);
+    this->showPlayerField.reset(new MapGenerator::MField(this->minefield.get()));
 }
 
 /**
@@ -25,14 +27,14 @@ Controller::Controller::Controller(MapGenerator::Minefield field) {
  * to user.
  */
 
-MapGenerator::Minefield
+const std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::GetMineField() const {
-    return minefield;
+    return this->minefield;
 }
 
-MapGenerator::Minefield
+std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::GetShowedField() {
-    return showPlayerField;
+    return this->showPlayerField;
 }
 
 /**
@@ -42,8 +44,10 @@ void Controller::Controller::Click() {
     printDebug("clicked");
     if (isClickedMine())
         finishGame(false);
-    // recalculate block here.
-    if (GetMineField()->GetMines() == GetShowedField()->GetSize() - GetShowedField()->GetMines())
+    // recalculate unrevealed block here.
+
+    /* if meet this condition, player win. */
+    if (GetMineField()->GetMines() == GetShowedField()->GetMines())
         finishGame(true);
 }
 
@@ -72,23 +76,23 @@ void Controller::Controller::Hint() {
  * Next four methods below are used to move cursor.
  */
 void Controller::Controller::CurLeftMov() {
-    if (!isOut(cursor.x, cursor.y - 1))
-        --cursor.y;
+    if (!isOut(this->cursor.x, this->cursor.y - 1))
+        --this->cursor.y;
 }
 
 void Controller::Controller::CurRightMov() {
-    if (!isOut(cursor.x, cursor.y + 1))
-        ++cursor.y;
+    if (!isOut(this->cursor.x, this->cursor.y + 1))
+        ++this->cursor.y;
 }
 
 void Controller::Controller::CurUpMov() {
-    if (!isOut(cursor.x - 1, cursor.y))
-        --cursor.x;
+    if (!isOut(this->cursor.x - 1, this->cursor.y))
+        --this->cursor.x;
 }
 
 void Controller::Controller::CurDownMov() {
-    if (!isOut(cursor.x + 1, cursor.y))
-        ++cursor.x;
+    if (!isOut(this->cursor.x + 1, this->cursor.y))
+        ++this->cursor.x;
 }
 
 /**
@@ -105,14 +109,17 @@ void Controller::Controller::Draw() {
  * @return
  */
 bool Controller::Controller::isOut(uint16_t x, uint16_t y) const {
-    return x < 0 || x >= showPlayerField->GetLine() || y < 0 || y >= showPlayerField->GetRow();
+    return x < 0 || x >= this->showPlayerField->GetLine()
+           || y < 0 || y >= this->showPlayerField->GetRow();
 }
 
 bool Controller::Controller::isClickedMine() const {
-    return (*GetMineField()->GetMap())[cursor.x][cursor.y] == 99;
+    return (*GetMineField()->GetMap())
+           [this->cursor.x][this->cursor.y] == 99;
 }
 
 void Controller::Controller::finishGame(bool result) {
+    std::cout << std::endl;
     if (result)
         std::cout << "you win" << std::endl;
     else
@@ -121,9 +128,7 @@ void Controller::Controller::finishGame(bool result) {
 }
 
 void Controller::Controller::generateEmptyMap() {
-    if (showPlayerField != nullptr)
-        delete showPlayerField;
-    showPlayerField = new MapGenerator::MField(minefield);
+    this->showPlayerField.reset(new MapGenerator::MField(this->minefield.get()));
 }
 
 /**
@@ -132,7 +137,5 @@ void Controller::Controller::generateEmptyMap() {
  * needs to be overwritten.
  */
 Controller::Controller::~Controller() {
-    delete minefield;
-    delete showPlayerField;
 }
 

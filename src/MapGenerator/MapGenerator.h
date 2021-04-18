@@ -27,7 +27,7 @@ namespace MapGenerator {
 
         explicit MField(LEVEL level);
 
-        explicit MField(MField *initializedMap);
+        explicit MField(const MField *initializedMap);
 
         MField(uint16_t cRow, uint16_t cLine, uint16_t cMines);
 
@@ -37,30 +37,34 @@ namespace MapGenerator {
 
         int GetMines() const;
 
-        int GetSize() const;
-
         Map *GetMap() const;
 
         ~MField();
 
     private:
-        uint16_t row;
-        uint16_t line;
-        uint16_t blocks;
+        uint16_t row;   // Row of minefield
+        uint16_t line;  // Line of minefield
+
+        /*
+         * numberOfMine has two different meaning.
+         * In minefield: number of mine.
+         * In showPlayerField: unrevealed blocks.
+         */
         uint16_t numberOfMines;
         uint16_t questioned = 0;
-        Map mineMap{};
+        Map mineMap{};  // Minefield map
 
-        void cleanMap();
+        void resetMap();
     };
 
-    typedef MField *Minefield;  // excepted to replace it by smart pointer.
+    typedef MField Minefield;
+    typedef MField *MinefieldPtr;
 
-    void generateMine(Minefield emptyField);
+    void generateMine(MinefieldPtr emptyField);
 
-    void pictureMap(Minefield minedField);
+    void pictureMap(MinefieldPtr minedField);
 
-    Minefield coveredMap(Minefield minefield);
+    MinefieldPtr coveredMap(MinefieldPtr minefield);
 
 }
 
