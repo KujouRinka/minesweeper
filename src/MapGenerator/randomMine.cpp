@@ -13,7 +13,7 @@
  * @param emptyField
  * A pointer of MField which just initialize map size.
  * */
-void MapGenerator::generateMine(Minefield emptyField) {
+void MapGenerator::generateMine(MinefieldPtr emptyField) {
     std::random_device rd;
     std::default_random_engine generator(rd());
     std::uniform_int_distribution<int> forRow(0, emptyField->GetRow() - 1);
@@ -53,12 +53,12 @@ void MapGenerator::generateMine(Minefield emptyField) {
     }
 }
 
-void MapGenerator::pictureMap(Minefield minedField) {
+void MapGenerator::pictureMap(MinefieldPtr minedField) {
     /* calculate quantity of mines around a block */
 }
 
-MapGenerator::Minefield
-MapGenerator::coveredMap(Minefield minefield) {
+MapGenerator::MinefieldPtr
+MapGenerator::coveredMap(MinefieldPtr minefield) {
     /* generate map that is shown to user */
     return nullptr;
 }

@@ -68,7 +68,7 @@ MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
  * @param initializedMap
  * A initialized Minefield
  */
-MapGenerator::MField::MField(MapGenerator::MField *initializedMap) {
+MapGenerator::MField::MField(const MapGenerator::MField *initializedMap) {
     this->row = initializedMap->row;
     this->line = initializedMap->line;
     this->blocks = initializedMap->blocks;

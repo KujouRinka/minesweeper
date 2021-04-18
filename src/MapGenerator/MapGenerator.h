@@ -11,7 +11,6 @@
 
 #include <cstdint>
 #include <array>
-#include <memory>
 
 namespace MapGenerator {
 
@@ -28,7 +27,7 @@ namespace MapGenerator {
 
         explicit MField(LEVEL level);
 
-        explicit MField(MField *initializedMap);
+        explicit MField(const MField *initializedMap);
 
         MField(uint16_t cRow, uint16_t cLine, uint16_t cMines);
 
@@ -61,13 +60,14 @@ namespace MapGenerator {
         void resetMap();
     };
 
-    typedef MField *Minefield;  // excepted to replace it by smart pointer.
+    typedef MField Minefield;
+    typedef MField *MinefieldPtr;
 
-    void generateMine(Minefield emptyField);
+    void generateMine(MinefieldPtr emptyField);
 
-    void pictureMap(Minefield minedField);
+    void pictureMap(MinefieldPtr minedField);
 
-    Minefield coveredMap(Minefield minefield);
+    MinefieldPtr coveredMap(MinefieldPtr minefield);
 
 }
 

@@ -11,6 +11,7 @@
 #define MINESWEEPER_CONTROLLER_H
 
 #include <string>
+#include <memory>
 #include "../MapGenerator/MapGenerator.h"
 
 namespace Controller {
@@ -19,11 +20,11 @@ namespace Controller {
     public:
         Controller() = default;
 
-        explicit Controller(MapGenerator::Minefield field);
+        explicit Controller(MapGenerator::MinefieldPtr field);
 
-        MapGenerator::Minefield GetMineField() const;
+        const std::unique_ptr<MapGenerator::Minefield> &GetMineField() const;
 
-        MapGenerator::Minefield GetShowedField();
+        std::unique_ptr<MapGenerator::Minefield> &GetShowedField();
 
         ~Controller();
 
@@ -51,10 +52,9 @@ namespace Controller {
             uint16_t y = 0;
         } cursor;
 
-        // excepted to replace it by smart pointer.
-        MapGenerator::Minefield minefield = nullptr;
+        std::unique_ptr<MapGenerator::Minefield> minefield{nullptr};
 
-        MapGenerator::Minefield showPlayerField = nullptr;
+        std::unique_ptr<MapGenerator::Minefield> showPlayerField{nullptr};
 
         void generateEmptyMap();
 

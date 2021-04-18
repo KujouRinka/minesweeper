@@ -16,7 +16,7 @@ Controller::Controller *Controller::InitGame() {
     int method;     // ask player to decide default or custom.
     std::cout << "method:";     // need to add more details here
     std::cin >> method;
-    MapGenerator::Minefield mField;
+    MapGenerator::MinefieldPtr mField;
     Controller *controller;
     std::cout << "mine:";
     switch (method) {

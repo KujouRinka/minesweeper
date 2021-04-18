@@ -12,15 +12,14 @@ void Controller::Controller::printDebug(const std::string &par) const {
 }
 
 /**
- * This method helps to initialize user struct.
+ * This method helps to initialize Controller struct.
  *
  * @param field
  * A initialized Minefield
  */
-Controller::Controller::Controller(MapGenerator::Minefield field) {
-    this->minefield = field;
-    this->showPlayerField =
-            new MapGenerator::MField(this->minefield);
+Controller::Controller::Controller(MapGenerator::MinefieldPtr field) {
+    this->minefield.reset(field);
+    this->showPlayerField.reset(new MapGenerator::MField(this->minefield.get()));
 }
 
 /**
@@ -28,12 +27,12 @@ Controller::Controller::Controller(MapGenerator::Minefield field) {
  * to user.
  */
 
-MapGenerator::Minefield
+const std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::GetMineField() const {
     return this->minefield;
 }
 
-MapGenerator::Minefield
+std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::GetShowedField() {
     return this->showPlayerField;
 }
@@ -126,9 +125,7 @@ void Controller::Controller::finishGame(bool result) {
 }
 
 void Controller::Controller::generateEmptyMap() {
-    if (this->showPlayerField != nullptr)
-        delete this->showPlayerField;
-    this->showPlayerField = new MapGenerator::MField(this->minefield);
+    this->showPlayerField.reset(new MapGenerator::MField(this->minefield.get()));
 }
 
 /**
@@ -137,7 +134,5 @@ void Controller::Controller::generateEmptyMap() {
  * needs to be overwritten.
  */
 Controller::Controller::~Controller() {
-    delete this->minefield;
-    delete this->showPlayerField;
 }
 
