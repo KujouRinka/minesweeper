@@ -14,8 +14,7 @@
  * A pointer of MField which just initialize map size.
  * */
 void MapGenerator::generateMine(MinefieldPtr emptyField) {
-    std::random_device rd;
-    std::default_random_engine generator(rd());
+    std::default_random_engine generator(static_cast<uint_fast32_t>(time(nullptr)));
     std::uniform_int_distribution<int> forRow(0, emptyField->GetRow() - 1);
     std::uniform_int_distribution<int> forLine(0, emptyField->GetLine() - 1);
     uint16_t mines = emptyField->GetMines();

@@ -37,8 +37,6 @@ namespace MapGenerator {
 
         int GetMines() const;
 
-        int GetSize() const;
-
         Map *GetMap() const;
 
         ~MField();
@@ -46,7 +44,6 @@ namespace MapGenerator {
     private:
         uint16_t row;   // Row of minefield
         uint16_t line;  // Line of minefield
-        uint16_t blocks;    // Total blocks of minefield: row * line
 
         /*
          * numberOfMine has two different meaning.

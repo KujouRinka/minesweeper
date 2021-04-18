@@ -44,8 +44,10 @@ void Controller::Controller::Click() {
     printDebug("clicked");
     if (isClickedMine())
         finishGame(false);
-    // recalculate block here.
-    if (GetMineField()->GetMines() == GetShowedField()->GetSize() - GetShowedField()->GetMines())
+    // recalculate unrevealed block here.
+
+    /* if meet this condition, player win. */
+    if (GetMineField()->GetMines() == GetShowedField()->GetMines())
         finishGame(true);
 }
 
@@ -117,6 +119,7 @@ bool Controller::Controller::isClickedMine() const {
 }
 
 void Controller::Controller::finishGame(bool result) {
+    std::cout << std::endl;
     if (result)
         std::cout << "you win" << std::endl;
     else
