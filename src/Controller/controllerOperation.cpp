@@ -26,7 +26,7 @@ Controller::Controller::Controller(MapGenerator::Minefield field) {
  */
 
 MapGenerator::Minefield
-Controller::Controller::GetMineField() {
+Controller::Controller::GetMineField() const {
     return minefield;
 }
 
@@ -40,6 +40,11 @@ Controller::Controller::GetShowedField() {
  */
 void Controller::Controller::Click() {
     printDebug("clicked");
+    if (isClickedMine())
+        finishGame(false);
+    // recalculate block here.
+    if (GetMineField()->GetMines() == GetShowedField()->GetSize() - GetShowedField()->GetMines())
+        finishGame(true);
 }
 
 /**
@@ -67,23 +72,23 @@ void Controller::Controller::Hint() {
  * Next four methods below are used to move cursor.
  */
 void Controller::Controller::CurLeftMov() {
-    if (!isOut(cursor.x - 1, cursor.y))
-        --cursor.x;
-}
-
-void Controller::Controller::CurRightMov() {
-    if (!isOut(cursor.x + 1, cursor.y))
-        ++cursor.x;
-}
-
-void Controller::Controller::CurUpMov() {
     if (!isOut(cursor.x, cursor.y - 1))
         --cursor.y;
 }
 
-void Controller::Controller::CurDownMov() {
+void Controller::Controller::CurRightMov() {
     if (!isOut(cursor.x, cursor.y + 1))
         ++cursor.y;
+}
+
+void Controller::Controller::CurUpMov() {
+    if (!isOut(cursor.x - 1, cursor.y))
+        --cursor.x;
+}
+
+void Controller::Controller::CurDownMov() {
+    if (!isOut(cursor.x + 1, cursor.y))
+        ++cursor.x;
 }
 
 /**
@@ -99,8 +104,20 @@ void Controller::Controller::Draw() {
  * @param y
  * @return
  */
-bool Controller::Controller::isOut(uint16_t x, uint16_t y) {
+bool Controller::Controller::isOut(uint16_t x, uint16_t y) const {
     return x < 0 || x >= showPlayerField->GetLine() || y < 0 || y >= showPlayerField->GetRow();
+}
+
+bool Controller::Controller::isClickedMine() const {
+    return (*GetMineField()->GetMap())[cursor.x][cursor.y] == 99;
+}
+
+void Controller::Controller::finishGame(bool result) {
+    if (result)
+        std::cout << "you win" << std::endl;
+    else
+        std::cout << "you lost" << std::endl;
+    FinishGame(this);
 }
 
 void Controller::Controller::generateEmptyMap() {
@@ -118,3 +135,4 @@ Controller::Controller::~Controller() {
     delete minefield;
     delete showPlayerField;
 }
+

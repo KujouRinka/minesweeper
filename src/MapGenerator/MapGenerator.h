@@ -37,6 +37,8 @@ namespace MapGenerator {
 
         int GetMines() const;
 
+        int GetSize() const;
+
         Map *GetMap() const;
 
         ~MField();
@@ -44,6 +46,7 @@ namespace MapGenerator {
     private:
         uint16_t row;
         uint16_t line;
+        uint16_t blocks;
         uint16_t numberOfMines;
         uint16_t questioned = 0;
         Map mineMap{};

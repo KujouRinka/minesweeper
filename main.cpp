@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 #include "src/Controller/Controller.h"
 
 using namespace std;
@@ -16,5 +17,7 @@ int main() {
     }
     Controller::InGameProcess(controller);
     Controller::FinishGame(controller);
+    //HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
     return 0;
 }

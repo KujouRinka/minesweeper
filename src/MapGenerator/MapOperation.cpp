@@ -30,6 +30,7 @@ MapGenerator::MField::MField(LEVEL level) {
     } else {
         exit(1);
     }
+    this->blocks = this->row * this->line;
     cleanMap();
     generateMine(this);
 }
@@ -56,6 +57,7 @@ MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
     row = cRow;
     line = cLine;
     numberOfMines = cMines;
+    blocks = cRow * cLine;
     cleanMap();
     generateMine(this);
 }
@@ -69,6 +71,7 @@ MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
 MapGenerator::MField::MField(MapGenerator::MField *initializedMap) {
     row = initializedMap->row;
     line = initializedMap->line;
+    blocks = initializedMap->blocks;
     numberOfMines = 0;
     cleanMap();
 }
@@ -85,6 +88,10 @@ int MapGenerator::MField::GetMines() const {
     return numberOfMines;
 }
 
+int MapGenerator::MField::GetSize() const {
+    return blocks;
+}
+
 MapGenerator::MField::Map *MapGenerator::MField::GetMap() const {
     return const_cast<Map *>(&mineMap);
 }
@@ -98,5 +105,3 @@ MapGenerator::MField::~MField() {
     //delete mineMap;
     // do some clean work.
 }
-
-
