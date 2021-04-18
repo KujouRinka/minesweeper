@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <array>
+#include <memory>
 
 namespace MapGenerator {
 
@@ -44,14 +45,20 @@ namespace MapGenerator {
         ~MField();
 
     private:
-        uint16_t row;
-        uint16_t line;
-        uint16_t blocks;
+        uint16_t row;   // Row of minefield
+        uint16_t line;  // Line of minefield
+        uint16_t blocks;    // Total blocks of minefield: row * line
+
+        /*
+         * numberOfMine has two different meaning.
+         * In minefield: number of mine.
+         * In showPlayerField: unrevealed blocks.
+         */
         uint16_t numberOfMines;
         uint16_t questioned = 0;
-        Map mineMap{};
+        Map mineMap{};  // Minefield map
 
-        void cleanMap();
+        void resetMap();
     };
 
     typedef MField *Minefield;  // excepted to replace it by smart pointer.

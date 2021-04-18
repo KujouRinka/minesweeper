@@ -31,7 +31,7 @@ MapGenerator::MField::MField(LEVEL level) {
         exit(1);
     }
     this->blocks = this->row * this->line;
-    cleanMap();
+    this->resetMap();
     generateMine(this);
 }
 
@@ -54,11 +54,11 @@ MapGenerator::MField::MField(LEVEL level) {
  */
 MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
                              uint16_t cMines) {
-    row = cRow;
-    line = cLine;
-    numberOfMines = cMines;
-    blocks = cRow * cLine;
-    cleanMap();
+    this->row = cRow;
+    this->line = cLine;
+    this->numberOfMines = cMines;
+    this->blocks = cRow * cLine;
+    this->resetMap();
     generateMine(this);
 }
 
@@ -69,39 +69,38 @@ MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
  * A initialized Minefield
  */
 MapGenerator::MField::MField(MapGenerator::MField *initializedMap) {
-    row = initializedMap->row;
-    line = initializedMap->line;
-    blocks = initializedMap->blocks;
-    numberOfMines = 0;
-    cleanMap();
+    this->row = initializedMap->row;
+    this->line = initializedMap->line;
+    this->blocks = initializedMap->blocks;
+    this->numberOfMines = row * line;
+    this->resetMap();
 }
 
 int MapGenerator::MField::GetRow() const {
-    return row;
+    return this->row;
 }
 
 int MapGenerator::MField::GetLine() const {
-    return line;
+    return this->line;
 }
 
 int MapGenerator::MField::GetMines() const {
-    return numberOfMines;
+    return this->numberOfMines;
 }
 
 int MapGenerator::MField::GetSize() const {
-    return blocks;
+    return this->blocks;
 }
 
 MapGenerator::MField::Map *MapGenerator::MField::GetMap() const {
-    return const_cast<Map *>(&mineMap);
+    return const_cast<Map *>(&this->mineMap);
 }
 
-void MapGenerator::MField::cleanMap() {
-    for (auto &i : mineMap)
+void MapGenerator::MField::resetMap() {
+    for (auto &i : this->mineMap)
         std::fill(i.begin(), i.end(), 0);
 }
 
 MapGenerator::MField::~MField() {
-    //delete mineMap;
     // do some clean work.
 }
