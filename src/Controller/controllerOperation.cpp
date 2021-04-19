@@ -157,9 +157,9 @@ void Controller::Controller::Draw() {
  * @param y
  */
 void Controller::Controller::recursionClick(uint16_t x, uint16_t y) {
-    if (!isOut(x, y) && (*GetShowedField()->GetMap())[x][y] != 1) {
+    if (!isOut(x, y) && (*GetShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::UNREVEALED) {
         --GetShowedField()->GetMines();
-        (*GetShowedField()->GetMap())[x][y] = 1;
+        (*GetShowedField()->GetMap())[x][y] = (*GetMineField()->GetMap())[x][y];
         if ((*GetMineField()->GetMap())[x][y] == 0) {
             for (int i = -1; i <= 1; ++i) {
                 for (int j = -1; j <= 1; ++j) {
@@ -198,12 +198,4 @@ void Controller::Controller::finishGame(bool result) {
 
 void Controller::Controller::generateEmptyMap() {
     this->showPlayerField.reset(new MapGenerator::MField(this->minefield.get()));
-}
-
-/**
- * Do clean work.
- *
- * needs to be overwritten.
- */
-Controller::Controller::~Controller() {
 }

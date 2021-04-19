@@ -51,8 +51,6 @@ namespace MapGenerator {
 
         Map *GetMap();
 
-        ~MField();
-
     private:
         uint16_t row;   // Row of minefield
         uint16_t line;  // Line of minefield
