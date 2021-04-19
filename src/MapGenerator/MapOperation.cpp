@@ -106,7 +106,3 @@ void MapGenerator::MField::resetMap(uint8_t value) {
     for (auto &i : this->mineMap)
         std::fill(i.begin(), i.end(), value);
 }
-
-MapGenerator::MField::~MField() {
-    // do some clean work.
-}

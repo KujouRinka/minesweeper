@@ -15,8 +15,21 @@
 #include "../MapGenerator/MapGenerator.h"
 
 namespace Controller {
+    struct Controller;
+
+    Controller *InitGame();
+
+    void showMap(Controller *controller);
+
+    void showCursor(Controller *controller);
+
+    void InGameProcess(Controller *controller);
+
+    void FinishGame(Controller *controller);
 
     struct Controller {
+        friend void showCursor(Controller *controller);
+
     public:
         Controller() = default;
 
@@ -25,8 +38,6 @@ namespace Controller {
         const std::unique_ptr<MapGenerator::Minefield> &GetMineField() const;
 
         std::unique_ptr<MapGenerator::Minefield> &GetShowedField();
-
-        ~Controller();
 
         void Click();
 
@@ -49,7 +60,7 @@ namespace Controller {
         void Draw();
 
     private:
-        struct {
+        struct cursorS {
             uint16_t x = 0;
             uint16_t y = 0;
         } cursor;
@@ -72,12 +83,6 @@ namespace Controller {
 
         void printDebug(const std::string &par, uint16_t x, uint16_t y);
     };
-
-    Controller *InitGame();
-
-    void InGameProcess(Controller *controller);
-
-    void FinishGame(Controller *controller);
 
 }
 
