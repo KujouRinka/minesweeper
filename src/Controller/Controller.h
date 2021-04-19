@@ -30,6 +30,8 @@ namespace Controller {
 
         void Click();
 
+        void Click(uint16_t x, uint16_t y);
+
         void Flag();
 
         void Question();
@@ -58,13 +60,17 @@ namespace Controller {
 
         void generateEmptyMap();
 
+        void recursionClick(uint16_t x, uint16_t y);
+
+        void clickEight(uint16_t x, uint16_t y);
+
         bool isOut(uint16_t x, uint16_t y) const;
 
-        bool isClickedMine() const;
+        bool isClickedMine(uint16_t x, uint16_t y) const;
 
         void finishGame(bool result);
 
-        void printDebug(const std::string &par) const;
+        void printDebug(const std::string &par, uint16_t x, uint16_t y);
     };
 
     Controller *InitGame();

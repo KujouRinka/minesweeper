@@ -70,7 +70,7 @@ MapGenerator::MField::MField(const MapGenerator::MField *initializedMap) {
     this->row = initializedMap->row;
     this->line = initializedMap->line;
     this->numberOfMines = this->row * this->line;
-    this->resetMap();
+    this->resetMap(BLOCKTYPE::UNREVEALED);
 }
 
 int MapGenerator::MField::GetRow() const {
@@ -85,16 +85,26 @@ int MapGenerator::MField::GetMines() const {
     return this->numberOfMines;
 }
 
-MapGenerator::MField::Map *MapGenerator::MField::GetMap() const {
+int &MapGenerator::MField::GetMines() {
+    return reinterpret_cast<int &>(this->numberOfMines);
+}
+
+const MapGenerator::MField::Map *
+MapGenerator::MField::GetMap() const {
     return const_cast<Map *>(&this->mineMap);
+}
+
+MapGenerator::MField::Map *
+MapGenerator::MField::GetMap() {
+    return &this->mineMap;
 }
 
 /**
  * Set all elements in mineMap to zero.
  */
-void MapGenerator::MField::resetMap() {
+void MapGenerator::MField::resetMap(uint8_t value) {
     for (auto &i : this->mineMap)
-        std::fill(i.begin(), i.end(), 0);
+        std::fill(i.begin(), i.end(), value);
 }
 
 MapGenerator::MField::~MField() {
