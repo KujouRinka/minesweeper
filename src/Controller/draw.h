@@ -6,8 +6,8 @@
  * This header is used to draw chars on console.
  */
 
-#ifndef MINESWEEPER_DRAWDOS_H
-#define MINESWEEPER_DRAWDOS_H
+#ifndef MINESWEEPER_DRAW_H
+#define MINESWEEPER_DRAW_H
 
 void drawArrow();
 
@@ -19,4 +19,4 @@ void drawScore();
 
 void drawTime();
 
-#endif //MINESWEEPER_DRAWDOS_H
+#endif //MINESWEEPER_DRAW_H

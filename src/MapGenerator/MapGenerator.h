@@ -15,7 +15,15 @@
 namespace MapGenerator {
 
     enum LEVEL {
-        EASY, NORMAL, HARD
+        EASY, NORMAL, HARD,
+    };
+
+    enum BLOCKTYPE {
+        EMPTY = 0,
+        MINE = 99,
+        QUESTIONED = 253,
+        FLAGGED = 254,
+        UNREVEALED = 255,
     };
 
     struct MField {
@@ -37,7 +45,11 @@ namespace MapGenerator {
 
         int GetMines() const;
 
-        Map *GetMap() const;
+        int &GetMines();
+
+        const Map *GetMap() const;
+
+        Map *GetMap();
 
         ~MField();
 
@@ -54,13 +66,16 @@ namespace MapGenerator {
         uint16_t questioned = 0;
         Map mineMap{};  // Minefield map
 
-        void resetMap();
+        void resetMap(uint8_t value=BLOCKTYPE::EMPTY);
     };
 
     typedef MField Minefield;
     typedef MField *MinefieldPtr;
 
     void generateMine(MinefieldPtr emptyField);
+
+    uint8_t typeAround(const uint16_t &row, const uint16_t &line,
+                       MinefieldPtr emptyField, BLOCKTYPE blockType);
 
     void pictureMap(MinefieldPtr minedField);
 

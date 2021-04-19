@@ -15,8 +15,8 @@
  * */
 void MapGenerator::generateMine(MinefieldPtr emptyField) {
     std::default_random_engine generator(static_cast<uint_fast32_t>(time(nullptr)));
-    std::uniform_int_distribution<int> forRow(0, emptyField->GetRow() - 1);
-    std::uniform_int_distribution<int> forLine(0, emptyField->GetLine() - 1);
+    std::uniform_int_distribution<uint16_t> forRow(0, emptyField->GetRow() - 1);
+    std::uniform_int_distribution<uint16_t> forLine(0, emptyField->GetLine() - 1);
     uint16_t mines = emptyField->GetMines();
     uint16_t generated = 0;
 
@@ -30,26 +30,30 @@ void MapGenerator::generateMine(MinefieldPtr emptyField) {
         generated++;
     }
 
-    // This lambda is used to calculate mines around a block.
-    auto mineAround = [map, emptyField](const uint16_t &row, const uint16_t &line) -> uint8_t {
-        int mines = 0;
-        for (int i = row - 1; i <= row + 1; ++i)
-            for (int j = line - 1; j <= line + 1; ++j) {
-                if (i >= 0 && j >= 0 && i < emptyField->GetRow() && j < emptyField->GetLine()) {
-                    if (!(i == row && j == line) && (*map)[i][j] == 99) {
-                        ++mines;
-                    }
-                }
-            }
-        return mines;
-    };
-
     for (int i = 0; i < emptyField->GetRow(); ++i) {
         for (int j = 0; j < emptyField->GetLine(); ++j) {
             if ((*map)[i][j] != 99)
-                (*map)[i][j] = mineAround(i, j);
+                (*map)[i][j] = typeAround(i, j, emptyField, BLOCKTYPE::MINE);
         }
     }
+}
+
+/**
+ * This function is used to calculate mines around a block.
+ */
+uint8_t MapGenerator::typeAround(const uint16_t &row, const uint16_t &line,
+                                 MinefieldPtr emptyField, BLOCKTYPE blockType) {
+    MField::Map *map = emptyField->GetMap();
+    int blocks = 0;
+    for (int i = row - 1; i <= row + 1; ++i)
+        for (int j = line - 1; j <= line + 1; ++j) {
+            if (i >= 0 && j >= 0 && i < emptyField->GetRow() && j < emptyField->GetLine()) {
+                if (!(i == row && j == line) && (*map)[i][j] == blockType) {
+                    ++blocks;
+                }
+            }
+        }
+    return blocks;
 }
 
 void MapGenerator::pictureMap(MinefieldPtr minedField) {
