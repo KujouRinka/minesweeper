@@ -52,7 +52,7 @@ void Controller::Controller::Click() {
  */
 void Controller::Controller::Click(uint16_t x, uint16_t y) {
 
-    if (isOut(x, y))
+    if (isOut(x, y) || (*this->GetShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::FLAGGED)
         return;
     if (isClickedMine(x, y))
         finishGame(false);
@@ -71,13 +71,13 @@ void Controller::Controller::Click(uint16_t x, uint16_t y) {
  * If this is a "unflagged" block then flag it and vice versa.
  */
 void Controller::Controller::Flag() {
-    uint8_t blockValue = (*GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
+    uint8_t blockValue = (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
     if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED) {
         printDebug("flagged", this->cursor.x, this->cursor.y);
-        (*GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::FLAGGED;
+        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::FLAGGED;
     } else if (blockValue == MapGenerator::BLOCKTYPE::FLAGGED) {
         printDebug("unflagged", this->cursor.x, this->cursor.y);
-        (*GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
+        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
     }
 }
 
@@ -85,13 +85,12 @@ void Controller::Controller::Flag() {
  * Do "question" block operation.
  */
 void Controller::Controller::Question() {
-
-    uint8_t blockValue = (*GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
+    uint8_t blockValue = (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
     if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED) {
-        (*GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::QUESTIONED;
+        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::QUESTIONED;
         printDebug("questioned", this->cursor.x, this->cursor.y);
     } else if (blockValue == MapGenerator::BLOCKTYPE::QUESTIONED) {
-        (*GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
+        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
         printDebug("unquestioned", this->cursor.x, this->cursor.y);
     }
 }
@@ -100,24 +99,18 @@ void Controller::Controller::Question() {
  * Auto click block around according flag surrounding.
  */
 void Controller::Controller::Hint() {
-    // this function has some problem.
-    printDebug("hint", this->cursor.x, this->cursor.y);
-
     uint8_t flagAround =
             MapGenerator::typeAround(this->cursor.x, this->cursor.y,
                                      this->GetShowedField().get(), MapGenerator::BLOCKTYPE::FLAGGED);
     if (flagAround == (*this->GetMineField()->GetMap())[this->cursor.x][this->cursor.y]) {
-        std::cout << "hint success" << std::endl;
         for (int i = -1; i <= 1; ++i) {
             for (int j = -1; j <= 1; ++j) {
-                if (!(i == 0 && j == 0) &&
-                    (*this->GetShowedField()->GetMap())[this->cursor.x + i][this->cursor.y + j] != 99) {
-                    this->Click(this->cursor.x + i, this->cursor.y + j);
-                }
+                if (!(i == 0 && j == 0))
+                    Click(this->cursor.x + i, this->cursor.y + j);
             }
         }
     } else {
-        std::cout << "hint fail" << std::endl;
+        // hint failed
     }
 }
 

@@ -56,6 +56,8 @@ void Controller::showMap(Controller *controller) {
                 printf("  f");
             else if (blockValue == MapGenerator::BLOCKTYPE::QUESTIONED)
                 printf("  ?");
+            else if (blockValue == 0)
+                printf("   ");
             else
                 printf("%3d", (*map)[i][j]);
         }
