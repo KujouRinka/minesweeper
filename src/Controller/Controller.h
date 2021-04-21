@@ -28,8 +28,6 @@ namespace Controller {
     void FinishGame(Controller *controller);
 
     struct Controller {
-        friend void showCursor(Controller *controller);
-
     public:
         Controller() = default;
 
@@ -38,6 +36,12 @@ namespace Controller {
         const std::unique_ptr<MapGenerator::Minefield> &GetMineField() const;
 
         std::unique_ptr<MapGenerator::Minefield> &GetShowedField();
+
+        void SendCmd(int command);
+
+        void showMap();
+
+        void showCursor() const;
 
         void Click();
 
@@ -69,17 +73,15 @@ namespace Controller {
 
         std::unique_ptr<MapGenerator::Minefield> showPlayerField{nullptr};
 
-        void generateEmptyMap();
-
         void recursionClick(uint16_t x, uint16_t y);
-
-        void clickEight(uint16_t x, uint16_t y);
 
         bool isOut(uint16_t x, uint16_t y) const;
 
         bool isClickedMine(uint16_t x, uint16_t y) const;
 
         void finishGame(bool result);
+
+        void generateEmptyMap();
 
         void printDebug(const std::string &par, uint16_t x, uint16_t y);
     };
