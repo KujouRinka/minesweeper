@@ -3,7 +3,10 @@
 //
 
 #include <iostream>
+#include <cstdlib>
 #include "Controller.h"
+
+#define DEBUG 0
 
 void Controller::Controller::printDebug(const std::string &par, uint16_t x, uint16_t y) {
     std::cout << "you " + par + " ("
@@ -27,7 +30,6 @@ Controller::Controller::Controller(MapGenerator::MinefieldPtr field) {
  * This method use MineField to create map showing
  * to user.
  */
-
 const std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::GetMineField() const {
     return this->minefield;
@@ -36,6 +38,89 @@ Controller::Controller::GetMineField() const {
 std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::GetShowedField() {
     return this->showPlayerField;
+}
+
+/**
+ * Receive and parse command and convert it to valid operation.
+ * @param command
+ * Int value, except a int value which can be converted to char.
+ */
+void Controller::Controller::SendCmd(int command) {
+    switch (command) {
+        case '1':   // click block
+            this->Click();
+            break;
+        case '2':   // flag block
+            this->Flag();
+            break;
+        case '3':   // question block
+            this->Question();
+            break;
+        case 75:
+        case 'h':   // left move cursor
+        case 'a':
+            this->CurLeftMov();
+            break;
+        case 80:
+        case 'j':   // down move cursor
+        case 's':
+            this->CurDownMov();
+            break;
+        case 72:
+        case 'k':   // up move cursor
+        case 'w':
+            this->CurUpMov();
+            break;
+        case 77:
+        case 'l':   // right move cursor
+        case 'd':
+            this->CurRightMov();
+            break;
+        case 'z':   // hint this block;
+            this->Hint();
+            break;
+        default:;
+    }
+    this->showMap();
+    this->showCursor();
+}
+
+/**
+ * This function is just a temporary solution to make output.
+ * @param controller
+ */
+void Controller::Controller::showMap() {
+    auto map = this->GetShowedField()->GetMap();
+    auto row = this->GetMineField()->GetRow();
+    auto line = this->GetMineField()->GetLine();
+
+    system("cls");
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < line; ++j) {
+            uint8_t blockValue = (*map)[i][j];
+            if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED)
+                printf("  @");
+            else if (blockValue == MapGenerator::BLOCKTYPE::FLAGGED)
+                printf("  f");
+            else if (blockValue == MapGenerator::BLOCKTYPE::QUESTIONED)
+                printf("  ?");
+            else if (blockValue == 0)
+                printf("   ");
+            else
+                printf("%3d", (*map)[i][j]);
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+/**
+ * Show where the cursor are.
+ */
+void Controller::Controller::showCursor() const {
+    std::cout << "\rcursor at :("
+              << this->cursor.x << ", " << this->cursor.y
+              << ")";
 }
 
 /**
@@ -54,16 +139,16 @@ void Controller::Controller::Click(uint16_t x, uint16_t y) {
 
     if (isOut(x, y) || (*this->GetShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::FLAGGED)
         return;
-    if (isClickedMine(x, y))
+    if (isClickedMine(x, y))   // clicked on mine.
         finishGame(false);
     // recalculate unrevealed block here.
     recursionClick(x, y);
 
-    printDebug("clicked", this->cursor.x, this->cursor.y);
-
     /* if meet this condition, player win. */
-    if (GetMineField()->GetMines() == GetShowedField()->GetMines())
+    if (GetMineField()->GetMines() == GetShowedField()->GetMines()) {
+        this->showMap();    // show map before end this game.
         finishGame(true);
+    }
 }
 
 /**
@@ -73,10 +158,8 @@ void Controller::Controller::Click(uint16_t x, uint16_t y) {
 void Controller::Controller::Flag() {
     uint8_t blockValue = (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
     if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED) {
-        printDebug("flagged", this->cursor.x, this->cursor.y);
         (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::FLAGGED;
     } else if (blockValue == MapGenerator::BLOCKTYPE::FLAGGED) {
-        printDebug("unflagged", this->cursor.x, this->cursor.y);
         (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
     }
 }
@@ -88,10 +171,8 @@ void Controller::Controller::Question() {
     uint8_t blockValue = (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
     if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED) {
         (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::QUESTIONED;
-        printDebug("questioned", this->cursor.x, this->cursor.y);
     } else if (blockValue == MapGenerator::BLOCKTYPE::QUESTIONED) {
         (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
-        printDebug("unquestioned", this->cursor.x, this->cursor.y);
     }
 }
 
