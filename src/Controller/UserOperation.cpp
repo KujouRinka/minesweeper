@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <conio.h>
+#include <windows.h>
 
 #include "Controller.h"
 
@@ -53,5 +54,6 @@ void Controller::InGameProcess(Controller *controller) {
  */
 void Controller::FinishGame(Controller *controller) {
     delete controller;
+    Sleep(1000);
     exit(0);
 }
