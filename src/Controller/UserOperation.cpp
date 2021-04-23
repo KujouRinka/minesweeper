@@ -53,4 +53,5 @@ void Controller::InGameProcess(Controller *controller) {
  */
 void Controller::FinishGame(Controller *controller) {
     delete controller;
+    exit(0);
 }

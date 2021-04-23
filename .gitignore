@@ -1,6 +1,7 @@
 .idea/
 cmake-build-debug/
-a.exe
+minesweeper.exe
+CMakeTmp/
 
 # Prerequisites
 *.d

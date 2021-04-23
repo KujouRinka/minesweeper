@@ -12,7 +12,7 @@ void Controller::Controller::printDebug(const std::string &par, uint16_t x, uint
     std::cout << "you " + par + " ("
               << x << ", " << y
               << ")" + std::string(10, ' ');
-    std::cout << this->GetMineField()->GetMines() << " " << this->GetShowedField()->GetMines() << std::endl;
+    std::cout << this->getMineField()->GetMines() << " " << this->getShowedField()->GetMines() << std::endl;
 }
 
 /**
@@ -31,12 +31,12 @@ Controller::Controller::Controller(MapGenerator::MinefieldPtr field) {
  * to user.
  */
 const std::unique_ptr<MapGenerator::Minefield> &
-Controller::Controller::GetMineField() const {
+Controller::Controller::getMineField() const {
     return this->minefield;
 }
 
 std::unique_ptr<MapGenerator::Minefield> &
-Controller::Controller::GetShowedField() {
+Controller::Controller::getShowedField() {
     return this->showPlayerField;
 }
 
@@ -48,36 +48,36 @@ Controller::Controller::GetShowedField() {
 void Controller::Controller::SendCmd(int command) {
     switch (command) {
         case '1':   // click block
-            this->Click();
+            this->click();
             break;
         case '2':   // flag block
-            this->Flag();
+            this->flag();
             break;
         case '3':   // question block
-            this->Question();
+            this->question();
             break;
         case 75:
         case 'h':   // left move cursor
         case 'a':
-            this->CurLeftMov();
+            this->curLeftMov();
             break;
         case 80:
         case 'j':   // down move cursor
         case 's':
-            this->CurDownMov();
+            this->curDownMov();
             break;
         case 72:
         case 'k':   // up move cursor
         case 'w':
-            this->CurUpMov();
+            this->curUpMov();
             break;
         case 77:
         case 'l':   // right move cursor
         case 'd':
-            this->CurRightMov();
+            this->curRightMov();
             break;
         case 'z':   // hint this block;
-            this->Hint();
+            this->hint();
             break;
         default:;
     }
@@ -90,9 +90,9 @@ void Controller::Controller::SendCmd(int command) {
  * @param controller
  */
 void Controller::Controller::showMap() {
-    auto map = this->GetShowedField()->GetMap();
-    auto row = this->GetMineField()->GetRow();
-    auto line = this->GetMineField()->GetLine();
+    auto map = this->getShowedField()->GetMap();
+    auto row = this->getMineField()->GetRow();
+    auto line = this->getMineField()->GetLine();
 
     system("cls");
     for (int i = 0; i < row; ++i) {
@@ -126,8 +126,8 @@ void Controller::Controller::showCursor() const {
 /**
  * Do click block operation cursor pointing to.
  */
-void Controller::Controller::Click() {
-    this->Click(this->cursor.x, this->cursor.y);
+void Controller::Controller::click() {
+    this->click(this->cursor.x, this->cursor.y);
 }
 
 /**
@@ -135,9 +135,9 @@ void Controller::Controller::Click() {
  * @param x
  * @param y
  */
-void Controller::Controller::Click(uint16_t x, uint16_t y) {
+void Controller::Controller::click(uint16_t x, uint16_t y) {
 
-    if (isOut(x, y) || (*this->GetShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::FLAGGED)
+    if (isOut(x, y) || (*this->getShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::FLAGGED)
         return;
     if (isClickedMine(x, y))   // clicked on mine.
         finishGame(false);
@@ -145,7 +145,7 @@ void Controller::Controller::Click(uint16_t x, uint16_t y) {
     recursionClick(x, y);
 
     /* if meet this condition, player win. */
-    if (GetMineField()->GetMines() == GetShowedField()->GetMines()) {
+    if (getMineField()->GetMines() == getShowedField()->GetMines()) {
         this->showMap();    // show map before end this game.
         finishGame(true);
     }
@@ -155,39 +155,39 @@ void Controller::Controller::Click(uint16_t x, uint16_t y) {
  * Do "flag" block operation.
  * If this is a "unflagged" block then flag it and vice versa.
  */
-void Controller::Controller::Flag() {
-    uint8_t blockValue = (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
+void Controller::Controller::flag() {
+    uint8_t blockValue = (*this->getShowedField()->GetMap())[this->cursor.x][this->cursor.y];
     if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED) {
-        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::FLAGGED;
+        (*this->getShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::FLAGGED;
     } else if (blockValue == MapGenerator::BLOCKTYPE::FLAGGED) {
-        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
+        (*this->getShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
     }
 }
 
 /**
  * Do "question" block operation.
  */
-void Controller::Controller::Question() {
-    uint8_t blockValue = (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y];
+void Controller::Controller::question() {
+    uint8_t blockValue = (*this->getShowedField()->GetMap())[this->cursor.x][this->cursor.y];
     if (blockValue == MapGenerator::BLOCKTYPE::UNREVEALED) {
-        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::QUESTIONED;
+        (*this->getShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::QUESTIONED;
     } else if (blockValue == MapGenerator::BLOCKTYPE::QUESTIONED) {
-        (*this->GetShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
+        (*this->getShowedField()->GetMap())[this->cursor.x][this->cursor.y] = MapGenerator::BLOCKTYPE::UNREVEALED;
     }
 }
 
 /**
  * Auto click block around according flag surrounding.
  */
-void Controller::Controller::Hint() {
+void Controller::Controller::hint() {
     uint8_t flagAround =
             MapGenerator::typeAround(this->cursor.x, this->cursor.y,
-                                     this->GetShowedField().get(), MapGenerator::BLOCKTYPE::FLAGGED);
-    if (flagAround == (*this->GetMineField()->GetMap())[this->cursor.x][this->cursor.y]) {
+                                     this->getShowedField().get(), MapGenerator::BLOCKTYPE::FLAGGED);
+    if (flagAround == (*this->getMineField()->GetMap())[this->cursor.x][this->cursor.y]) {
         for (int i = -1; i <= 1; ++i) {
             for (int j = -1; j <= 1; ++j) {
                 if (!(i == 0 && j == 0))
-                    Click(this->cursor.x + i, this->cursor.y + j);
+                    click(this->cursor.x + i, this->cursor.y + j);
             }
         }
     } else {
@@ -198,22 +198,22 @@ void Controller::Controller::Hint() {
 /**
  * Next four methods below are used to move cursor.
  */
-void Controller::Controller::CurLeftMov() {
+void Controller::Controller::curLeftMov() {
     if (!isOut(this->cursor.x, this->cursor.y - 1))
         --this->cursor.y;
 }
 
-void Controller::Controller::CurRightMov() {
+void Controller::Controller::curRightMov() {
     if (!isOut(this->cursor.x, this->cursor.y + 1))
         ++this->cursor.y;
 }
 
-void Controller::Controller::CurUpMov() {
+void Controller::Controller::curUpMov() {
     if (!isOut(this->cursor.x - 1, this->cursor.y))
         --this->cursor.x;
 }
 
-void Controller::Controller::CurDownMov() {
+void Controller::Controller::curDownMov() {
     if (!isOut(this->cursor.x + 1, this->cursor.y))
         ++this->cursor.x;
 }
@@ -221,7 +221,7 @@ void Controller::Controller::CurDownMov() {
 /**
  * Draw console.
  */
-void Controller::Controller::Draw() {
+void Controller::Controller::draw() {
 
 }
 
@@ -231,10 +231,10 @@ void Controller::Controller::Draw() {
  * @param y
  */
 void Controller::Controller::recursionClick(uint16_t x, uint16_t y) {
-    if (!isOut(x, y) && (*GetShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::UNREVEALED) {
-        --GetShowedField()->GetMines();
-        (*GetShowedField()->GetMap())[x][y] = (*GetMineField()->GetMap())[x][y];
-        if ((*GetMineField()->GetMap())[x][y] == 0) {
+    if (!isOut(x, y) && (*getShowedField()->GetMap())[x][y] == MapGenerator::BLOCKTYPE::UNREVEALED) {
+        --getShowedField()->GetMines();
+        (*getShowedField()->GetMap())[x][y] = (*getMineField()->GetMap())[x][y];
+        if ((*getMineField()->GetMap())[x][y] == 0) {
             for (int i = -1; i <= 1; ++i) {
                 for (int j = -1; j <= 1; ++j) {
                     if (!(i == 0 && j == 0)) {
@@ -258,7 +258,7 @@ bool Controller::Controller::isOut(uint16_t x, uint16_t y) const {
 }
 
 bool Controller::Controller::isClickedMine(uint16_t x, uint16_t y) const {
-    return (*GetMineField()->GetMap())[x][y] == 99;
+    return (*getMineField()->GetMap())[x][y] == 99;
 }
 
 void Controller::Controller::finishGame(bool result) {

@@ -12,16 +12,15 @@
 
 #include <string>
 #include <memory>
+
+#include "draw.h"
 #include "../MapGenerator/MapGenerator.h"
 
 namespace Controller {
+
     struct Controller;
 
     Controller *InitGame();
-
-    void showMap(Controller *controller);
-
-    void showCursor(Controller *controller);
 
     void InGameProcess(Controller *controller);
 
@@ -33,35 +32,7 @@ namespace Controller {
 
         explicit Controller(MapGenerator::MinefieldPtr field);
 
-        const std::unique_ptr<MapGenerator::Minefield> &GetMineField() const;
-
-        std::unique_ptr<MapGenerator::Minefield> &GetShowedField();
-
         void SendCmd(int command);
-
-        void showMap();
-
-        void showCursor() const;
-
-        void Click();
-
-        void Click(uint16_t x, uint16_t y);
-
-        void Flag();
-
-        void Question();
-
-        void Hint();
-
-        void CurLeftMov();
-
-        void CurRightMov();
-
-        void CurUpMov();
-
-        void CurDownMov();
-
-        void Draw();
 
     private:
         struct cursorS {
@@ -72,6 +43,34 @@ namespace Controller {
         std::unique_ptr<MapGenerator::Minefield> minefield{nullptr};
 
         std::unique_ptr<MapGenerator::Minefield> showPlayerField{nullptr};
+
+        const std::unique_ptr<MapGenerator::Minefield> &getMineField() const;
+
+        std::unique_ptr<MapGenerator::Minefield> &getShowedField();
+
+        void showMap();
+
+        void showCursor() const;
+
+        void click();
+
+        void click(uint16_t x, uint16_t y);
+
+        void flag();
+
+        void question();
+
+        void hint();
+
+        void curLeftMov();
+
+        void curRightMov();
+
+        void curUpMov();
+
+        void curDownMov();
+
+        void draw();
 
         void recursionClick(uint16_t x, uint16_t y);
 
