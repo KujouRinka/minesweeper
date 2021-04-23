@@ -10,7 +10,7 @@
 #ifndef MINESWEEPER_HISTORY_H
 #define MINESWEEPER_HISTORY_H
 
-namespace history {
+namespace History {
 
     void history();
 
