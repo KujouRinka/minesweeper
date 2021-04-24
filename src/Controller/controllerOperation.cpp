@@ -19,7 +19,7 @@ void Controller::Controller::printDebug(const std::string &par, uint16_t x, uint
  * This method helps to initialize Controller struct.
  *
  * @param field
- * A initialized Minefield
+ * A totally initialized Minefield
  */
 Controller::Controller::Controller(MapGenerator::MinefieldPtr field) {
     this->minefield.reset(field);
@@ -27,8 +27,7 @@ Controller::Controller::Controller(MapGenerator::MinefieldPtr field) {
 }
 
 /**
- * This method use MineField to create map showing
- * to user.
+ * This method uses MineField to create map showing to user.
  */
 const std::unique_ptr<MapGenerator::Minefield> &
 Controller::Controller::getMineField() const {
@@ -115,7 +114,7 @@ void Controller::Controller::showMap() {
 }
 
 /**
- * Show where the cursor are.
+ * Show where the cursor is.
  */
 void Controller::Controller::showCursor() const {
     std::cout << "\rcursor at :("

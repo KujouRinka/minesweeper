@@ -7,8 +7,8 @@
 #include "MapGenerator.h"
 
 /**
- * Use random header to generate some mines.
- * Write a fully initialize map to Controller::minefield
+ * Use random library to generate some mines.
+ * Write a totally initialize map to Controller::minefield
  *
  * @param emptyField
  * A pointer of MField which just initialize map size.
@@ -39,7 +39,7 @@ void MapGenerator::generateMine(MinefieldPtr emptyField) {
 }
 
 /**
- * This function is used to calculate mines around a block.
+ * This function is used to calculate specific block around a block.
  */
 uint8_t MapGenerator::typeAround(const uint16_t &row, const uint16_t &line,
                                  MinefieldPtr emptyField, BLOCKTYPE blockType) {
