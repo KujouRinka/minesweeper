@@ -61,7 +61,7 @@ MapGenerator::MField::MField(uint16_t cRow, uint16_t cLine,
 }
 
 /**
- * Use a initialize MField to generate map showing to user.
+ * Use a initialize MField to generate map showed to user.
  *
  * @param initializedMap
  * A initialized Minefield
