@@ -34,21 +34,14 @@ namespace MapGenerator {
         MField() = default;
 
         explicit MField(LEVEL level);
-
         explicit MField(const MField *initializedMap);
-
         MField(uint16_t cRow, uint16_t cLine, uint16_t cMines);
 
         int GetRow() const;
-
         int GetLine() const;
-
         int GetMines() const;
-
         int &GetMines();
-
         const Map *GetMap() const;
-
         Map *GetMap();
 
     private:
@@ -76,7 +69,6 @@ namespace MapGenerator {
                        MinefieldPtr emptyField, BLOCKTYPE blockType);
 
     void pictureMap(MinefieldPtr minedField);
-
     MinefieldPtr coveredMap(MinefieldPtr minefield);
 
 }

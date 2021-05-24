@@ -43,7 +43,7 @@ void Controller::InGameProcess(Controller *controller) {
     int command;
     controller->SendCmd('i');   // show unclicked map.
     while ((command = getch()) != EOF && command != 'q') {    // read cmd from keyboard
-           controller->SendCmd(command);
+        controller->SendCmd(command);
     }
 }
 

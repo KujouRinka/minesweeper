@@ -21,15 +21,12 @@ namespace Controller {
     struct Controller;
 
     Controller *InitGame();
-
     void InGameProcess(Controller *controller);
-
     void FinishGame(Controller *controller);
 
     struct Controller {
     public:
         Controller() = default;
-
         explicit Controller(MapGenerator::MinefieldPtr field);
 
         void SendCmd(int command);
@@ -41,50 +38,28 @@ namespace Controller {
         } cursor;
 
         std::unique_ptr<MapGenerator::Minefield> minefield{nullptr};
-
         std::unique_ptr<MapGenerator::Minefield> showPlayerField{nullptr};
-
         const std::unique_ptr<MapGenerator::Minefield> &getMineField() const;
-
         std::unique_ptr<MapGenerator::Minefield> &getShowedField();
-
         void showMap();
-
         void showCursor() const;
-
         void click();
-
         void click(uint16_t x, uint16_t y);
-
         void flag();
-
         void question();
-
         void hint();
-
         void curLeftMov();
-
         void curRightMov();
-
         void curUpMov();
-
         void curDownMov();
-
         void draw();
-
         void recursionClick(uint16_t x, uint16_t y);
-
         bool isOut(uint16_t x, uint16_t y) const;
-
         bool isClickedMine(uint16_t x, uint16_t y) const;
-
         void finishGame(bool result);
-
         void generateEmptyMap();
-
         void printDebug(const std::string &par, uint16_t x, uint16_t y);
     };
-
 }
 
 #endif //MINESWEEPER_CONTROLLER_H
