@@ -14,18 +14,20 @@
 Controller::Controller *Controller::InitGame() {
     int method;     // ask player to decide default or custom.
     std::cout << "method:";     // need to add more details here
-    std::cin >> method;
+    std::cin >> method;     // 0: custom; 1: default
     MapGenerator::MinefieldPtr mField;
     Controller *controller;
     std::cout << "mine:";
     switch (method) {
         case 0:
             int row, line, mine;
+            std::cout << "type in row, line, mines respectively" << std::endl;
             std::cin >> row >> line >> mine;
             mField = new MapGenerator::MField(row, line, mine);
             break;
         case 1:
             int diff;
+            std::cout << "0. easy\t1.normal\t2.hard" << std::endl;
             std::cin >> diff;
             mField = new MapGenerator::MField(static_cast<MapGenerator::LEVEL>(diff));
             break;
@@ -42,6 +44,8 @@ Controller::Controller *Controller::InitGame() {
 void Controller::InGameProcess(Controller *controller) {
     int command;
     controller->SendCmd('i');   // show unclicked map.
+
+    // except to be rewritten to fit both DOS and UNIX
     while ((command = getch()) != EOF && command != 'q') {    // read cmd from keyboard
         controller->SendCmd(command);
     }

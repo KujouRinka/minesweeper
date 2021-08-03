@@ -1,5 +1,5 @@
 .idea/
-cmake-build-debug/
+cmake-build-debug-mingw/
 minesweeper.exe
 CMakeLists.txt
 CMakeTmp/

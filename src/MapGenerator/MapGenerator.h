@@ -28,7 +28,6 @@ namespace MapGenerator {
 
     struct MField {
     public:
-
         typedef std::array<std::array<uint8_t, 30>, 30> Map;
 
         MField() = default;
